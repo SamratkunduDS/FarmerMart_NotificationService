@@ -1,0 +1,22 @@
+package com.farmermart.notification.Notification.Service.dto.response;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class PaymentResponse {
+    private String paymentId;
+    private String userId;
+    private String transactionId;
+    private boolean success;
+    private double amount;
+    private LocalDateTime timestamp;
+}

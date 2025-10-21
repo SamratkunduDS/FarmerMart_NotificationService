@@ -9,4 +9,9 @@ import org.springframework.stereotype.Service;
 public interface PromotionService {
 
     PromoOffer createPromotion(PromotionRequestDto promotionRequestDto);
+    public PromotionRequestDto getAll();
+
+    PromoOffer getPromoCode(String promoCode);
+
+    void deleteByid(String id);
 }

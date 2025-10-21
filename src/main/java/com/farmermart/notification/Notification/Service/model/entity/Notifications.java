@@ -7,11 +7,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.modelmapper.internal.bytebuddy.asm.Advice;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.sql.Time;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -22,10 +22,12 @@ public class Notifications {
     @Id
     private String id;
     private String userId;
-    private String message;
+    private String type;
     private NotificationChannel channel;
     private NotificationContent content;
     private NotificationStatus status;
-    private Time createdAt;
-    private Time updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
+
 }

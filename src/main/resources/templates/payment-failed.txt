@@ -1,0 +1,5 @@
+Hi {{userName}},
+
+Your payment failed due to a technical issue. Please retry or contact support.
+
+– FarmerMart Support

@@ -1,0 +1,7 @@
+Hi {{userName}},
+
+We’ve received your feedback regarding product quality for "{{productName}}".
+Our team is reviewing your concern and will reach out shortly.
+
+We value your trust and aim to resolve this quickly.
+– FarmerMart Quality Team

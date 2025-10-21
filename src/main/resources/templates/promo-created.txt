@@ -1,0 +1,11 @@
+Hi {{userName}},
+
+Good news! A new promotion has been launched. 🎁
+
+Promo Code: {{promoCode}}
+Description: {{description}}
+Valid From: {{validFrom}}
+Valid Till: {{validTill}}
+
+Use this offer before it expires.
+– FarmerMart Promotions

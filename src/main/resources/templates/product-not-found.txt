@@ -1,0 +1,9 @@
+Dear {{userName}},
+
+We’re sorry! The product you were looking for ({{productName}}) is currently unavailable.
+Our team is working to restock it soon.
+
+You’ll be notified once it’s available again.
+
+Thank you for your patience.
+– FarmerMart Support

@@ -1,0 +1,7 @@
+Hello {{userName}},
+
+The promotion "{{promoCode}}" has now ended or been deactivated.
+We’ll keep you posted about new offers soon!
+
+Thank you for being a valued customer.
+– FarmerMart Promotions Team
