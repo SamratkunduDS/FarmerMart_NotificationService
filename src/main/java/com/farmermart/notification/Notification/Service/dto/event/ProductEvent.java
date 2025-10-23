@@ -13,4 +13,5 @@ public class ProductEvent {
     private String vendorId;
     private String vendorName;
     private String type;
+    private String message;
 }

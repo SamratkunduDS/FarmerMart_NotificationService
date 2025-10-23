@@ -23,6 +23,7 @@ public class Notifications {
     private String id;
     private String userId;
     private String type;
+    private String message;
     private NotificationChannel channel;
     private NotificationContent content;
     private NotificationStatus status;

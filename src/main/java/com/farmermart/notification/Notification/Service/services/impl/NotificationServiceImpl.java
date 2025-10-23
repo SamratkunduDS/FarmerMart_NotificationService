@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -144,6 +145,9 @@ public class NotificationServiceImpl implements PromotionService, NotificationSe
 
         return sendNotificationByChannel(request, NotificationChannel.EMAIL);
     }
+
+
+
 
     @Override
     public NotificationResponseDto saveNotification(NotificationRequestDto request, NotificationStatus status) {

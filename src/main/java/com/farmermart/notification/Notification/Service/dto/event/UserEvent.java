@@ -14,4 +14,8 @@ public class UserEvent {
     private String mobile;
     private String role;
     private String type;
+    private String message;
+    private String userId;
+
+
 }
