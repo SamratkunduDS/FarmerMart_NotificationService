@@ -7,7 +7,7 @@ import lombok.*;
 @Getter
 public class OtpRequest {
 
-    private String email;   // or phone number
+    private String email;
     private String phoneNumber;
 
 

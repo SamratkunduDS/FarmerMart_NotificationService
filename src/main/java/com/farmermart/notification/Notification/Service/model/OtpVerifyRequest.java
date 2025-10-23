@@ -1,14 +1,5 @@
 package com.farmermart.notification.Notification.Service.model;
 
-import lombok.Data;
-
-//@Data
-//public class OtpVerifyRequest {
-//    private String email;
-//    private String otp;
-//}
-
-
 public class OtpVerifyRequest {
     private String identifier; // email or phone
     private String otp;
