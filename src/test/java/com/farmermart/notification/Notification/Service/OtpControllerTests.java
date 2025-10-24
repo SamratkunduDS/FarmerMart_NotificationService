@@ -41,7 +41,7 @@ class OtpControllerTests {
         testPhone = "9876543210";
     }
 
-    // ✅ 1. Send OTP to email
+    // 1. Send OTP to email
     @Test
     void testSendOtpToEmail() throws Exception {
         Map<String, String> body = new HashMap<>();
@@ -54,7 +54,7 @@ class OtpControllerTests {
                 .andExpect(content().string(containsString("OTP sent successfully")));
     }
 
-    // ✅ 2. Send OTP to phone
+    // 2. Send OTP to phone
     @Test
     void testSendOtpToPhone() throws Exception {
         Map<String, String> body = new HashMap<>();
@@ -67,7 +67,7 @@ class OtpControllerTests {
                 .andExpect(content().string(containsString("OTP sent successfully")));
     }
 
-    // ❌ 3. Send OTP with missing field
+    // 3. Send OTP with missing field
     @Test
     void testSendOtpMissingField() throws Exception {
         Map<String, String> body = new HashMap<>();
@@ -80,7 +80,7 @@ class OtpControllerTests {
                 .andExpect(content().string(containsString("Missing email or phone")));
     }
 
-    // ✅ 4. Verify valid OTP (happy path)
+    // 4. Verify valid OTP (happy path)
     @Test
     void testVerifyValidOtp() throws Exception {
         // Generate OTP directly
@@ -97,7 +97,7 @@ class OtpControllerTests {
                 .andExpect(content().string(containsString("OTP verified successfully")));
     }
 
-    // ❌ 5. Verify with wrong OTP
+    // 5. Verify with wrong OTP
     @Test
     void testVerifyInvalidOtp() throws Exception {
         otpService.generateOtp(testPhone);
@@ -113,7 +113,7 @@ class OtpControllerTests {
                 .andExpect(content().string(containsString("Invalid or expired OTP")));
     }
 
-    // ❌ 6. Verify missing fields
+    // 6. Verify missing fields
     @Test
     void testVerifyMissingFields() throws Exception {
         Map<String, String> body = new HashMap<>();

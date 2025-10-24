@@ -34,7 +34,7 @@ public class OtpService {
 
     private record OtpDetails(String otp, LocalDateTime expiresAt) {}
 
-    // ✅ Generate random 6-digit OTP
+    // Generate random 6-digit OTP
     private String generateOtpCode() {
         return String.format("%06d", new Random().nextInt(999999));
     }
@@ -48,7 +48,7 @@ public class OtpService {
         }
     }
 
-    // ✅ Generate and send OTP (email or SMS)
+    // Generate and send OTP (email or SMS)
     public String generateOtp(String emailOrPhone) {
         String key = normalizeKey(emailOrPhone);
         String otp = generateOtpCode();
@@ -70,7 +70,7 @@ public class OtpService {
         return otp;
     }
 
-    // ✅ Verify OTP
+    // Verify OTP
     public static boolean verifyOtp(String emailOrPhone, String otp) {
         String key = normalizeKey(emailOrPhone);
         System.out.println("Verifying OTP for key: " + key + " | map: " + otpStorage);
@@ -96,7 +96,7 @@ public class OtpService {
         return true;
     }
 
-    // ✅ Send OTP via Email
+    // Send OTP via Email
     private void sendOtpEmail(String toEmail, String otp) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("sushant051296@gmail.com");
@@ -117,7 +117,7 @@ public class OtpService {
         System.out.println("✅ OTP sent to email: " + toEmail);
     }
 
-    // ✅ Send OTP via Fast2SMS
+    // Send OTP via Fast2SMS
     private void sendOtpSms(String phoneNumber, String otp) {
         try {
             String message = "Your FarmerMart OTP is: " + otp + ". It will expire in 5 minutes.";
@@ -152,13 +152,13 @@ public class OtpService {
             ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
 
             if (response.getStatusCode() == HttpStatus.OK) {
-                System.out.println("✅ OTP sent to phone: " + phoneNumber);
+                System.out.println("OTP sent to phone: " + phoneNumber);
             } else {
-                System.err.println("❌ Failed to send SMS OTP: " + response.getBody());
+                System.err.println("Failed to send SMS OTP: " + response.getBody());
             }
 
         } catch (Exception e) {
-            System.err.println("❌ Error sending SMS OTP: " + e.getMessage());
+            System.err.println("Error sending SMS OTP: " + e.getMessage());
         }
     }
 }

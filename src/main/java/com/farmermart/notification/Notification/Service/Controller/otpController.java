@@ -39,9 +39,7 @@ public class otpController {
         if (key == null) key = request.get("email");
         if (key == null) key = request.get("phoneNumber");
 
-        System.out.println("✅ Extracted key: " + key);
-
-        System.out.println(key);
+        System.out.println("Extracted key: " + key);
 
         String otp = request.get("otp");             // must match JSON key
 
