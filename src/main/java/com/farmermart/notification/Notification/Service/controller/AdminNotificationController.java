@@ -18,11 +18,11 @@ public class AdminNotificationController {
     @Autowired
     private final AdminNotificationService adminNotificationService;
 
-    @PostMapping("/product/delete")
+    @DeleteMapping("/product/delete")
     public ResponseEntity<NotificationResponseDto> sendProductDeletedAlert(@RequestBody NotificationRequestDto request) {
         return ResponseEntity.ok(adminNotificationService.sendProductDeletedAlert(request));
     }
-    @PostMapping("/vendor/delete")
+    @DeleteMapping("/vendor/delete")
     public ResponseEntity<NotificationResponseDto> sendVendorDeletionAlert(@RequestBody NotificationRequestDto request) {
         return ResponseEntity.ok(adminNotificationService.sendVendorDeletionAlert(request));
     }
