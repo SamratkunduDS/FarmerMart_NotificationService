@@ -23,4 +23,5 @@ public class NotificationRequestDto {
     private NotificationStatus status;
     private Time createdAt;
     private Time updatedAt;
+    private String transactionId;
 }

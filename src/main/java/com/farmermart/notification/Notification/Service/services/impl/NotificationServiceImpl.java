@@ -9,6 +9,7 @@ import com.farmermart.notification.Notification.Service.dto.response.PaymentResp
 import com.farmermart.notification.Notification.Service.dto.response.PromoOffer;
 import com.farmermart.notification.Notification.Service.dto.response.UserResponse;
 import com.farmermart.notification.Notification.Service.exception.PromoCodeNotExistException;
+import com.farmermart.notification.Notification.Service.exception.TemplateLoadException;
 import com.farmermart.notification.Notification.Service.model.NotificationChannel;
 import com.farmermart.notification.Notification.Service.model.NotificationContent;
 import com.farmermart.notification.Notification.Service.model.NotificationStatus;
@@ -36,7 +37,7 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
-public class NotificationServiceImpl implements PromotionService, NotificationService, EmailService, SmsService {
+public class NotificationServiceImpl implements PromotionService, EmailService, SmsService {
 
 
     private final ModelMapper modelMapper;
@@ -82,24 +83,39 @@ public class NotificationServiceImpl implements PromotionService, NotificationSe
 
     @Override
     public NotificationResponseDto sendEmailNotification(NotificationRequestDto request) {
-        PaymentResponse paymentById = paymentClient.getPaymentById(request.getUserId());
-        UserResponse userById = userClient.getUserById(request.getUserId());
 
+        // Step 1: Fetch Payment Details via Feign Client
+        PaymentResponse payment = paymentClient.getPaymentStatus(request.getTransactionId());
+
+        // Step 2: Fetch User Details (for personalization)
+        UserResponse user = userClient.getUserById(request.getUserId());
+
+        // Step 3: Fill placeholders
         Map<String, String> placeholders = Map.of(
-                "userId", request.getUserId(),
-                "transactionId", paymentById.getTransactionId(),
-                "date", LocalDateTime.now().toString()
+                "name", user.getName(),
+                "amount", String.valueOf(payment.getAmount()),
+                "transactionId", payment.getTransactionId(),
+                "status", payment.getOrderStatus(),
+                "email", user.getEmail()
         );
 
-        String templateFile = paymentById.isSuccess() ? "payment-success.txt" : "payment-failed.txt";
-        String message = null;
+        // Step 4: Load Template Based on Payment Status
+        String templateFile = payment.getOrderStatus().equalsIgnoreCase("PAID")
+                ? "payment-success.txt"
+                : "payment-failed.txt";
+
+        String message;
         try {
             message = templateUtil.loadTemplate(templateFile, placeholders);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new TemplateLoadException("Failed to load template: " + templateFile, e);
         }
 
+        // Step 5: Build Request Message and Save Notification
         request.setMessage(message);
+        request.setContent(NotificationContent.TRANSACTION_ALERT);
+        request.setChannel(NotificationChannel.EMAIL);
+
         return sendNotificationByChannel(request, NotificationChannel.EMAIL);
     }
 
@@ -114,42 +130,6 @@ public class NotificationServiceImpl implements PromotionService, NotificationSe
     }
 
     @Override
-    public NotificationResponseDto sendPaymentNotification(String paymentId) {
-        var payment = paymentClient.getPaymentById(paymentId);
-
-        var user = userClient.getUserById(payment.getUserId());
-
-        Map<String, String> placeholders = Map.of(
-                "userName", user.getName(),
-                "transactionId", payment.getTransactionId(),
-                "date", String.valueOf(payment.getTimestamp())
-        );
-
-        String templateFile = payment.isSuccess() ? "payment-success.txt" : "payment-failed.txt";
-
-        String message = null;
-        try {
-            message = templateUtil.loadTemplate(templateFile, placeholders);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        NotificationRequestDto request = NotificationRequestDto.builder()
-                .userId(user.getId())
-                .message(message)
-                .type("PAYMENT_NOTIFICATION")
-                .channel(NotificationChannel.EMAIL)
-                .content(NotificationContent.TRANSACTION_ALERT)
-                .status(NotificationStatus.PENDING)
-                .build();
-
-        return sendNotificationByChannel(request, NotificationChannel.EMAIL);
-    }
-
-
-
-
-    @Override
     public NotificationResponseDto saveNotification(NotificationRequestDto request, NotificationStatus status) {
         Notifications notification = buildNotification(request);
         notification.setStatus(status);
@@ -157,21 +137,16 @@ public class NotificationServiceImpl implements PromotionService, NotificationSe
         return modelMapper.map(saved, NotificationResponseDto.class);
     }
 
-
     private NotificationResponseDto sendNotificationByChannel(NotificationRequestDto request,
                                                               NotificationChannel channel) {
-
         Notifications notification = buildNotification(request);
         notification.setChannel(channel);
         notification.setStatus(NotificationStatus.PENDING);
 
         Notifications saved = notificationRepository.save(notification);
-
         try {
-
             System.out.printf("Sending %s notification to user %s%n", channel, request.getUserId());
-            System.out.println("Message: " + request.getType());
-
+            System.out.println("Message: " + request.getMessage());
             saved.setStatus(NotificationStatus.SENT);
         } catch (Exception e) {
             saved.setStatus(NotificationStatus.FAILED);
@@ -182,9 +157,7 @@ public class NotificationServiceImpl implements PromotionService, NotificationSe
         return modelMapper.map(updated, NotificationResponseDto.class);
     }
 
-
     private Notifications buildNotification(NotificationRequestDto request) {
-        Notifications map = modelMapper.map(request, Notifications.class);
-        return map;
+        return modelMapper.map(request, Notifications.class);
     }
 }

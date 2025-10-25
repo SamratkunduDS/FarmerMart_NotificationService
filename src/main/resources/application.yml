@@ -4,7 +4,6 @@ spring:
       enabled: false
       import-check:
         enabled: false
-<<<<<<< HEAD
 
   kafka:
     bootstrap-servers: localhost:9092
@@ -20,7 +19,7 @@ spring:
               packages: com.farmermart.notification.Notification.Service.dto.request
   mongodb:
     uri: mongodb://localhost:27017/notifications
-=======
+
 server:
   port: 8000
->>>>>>> origin/sushant-1.0
+

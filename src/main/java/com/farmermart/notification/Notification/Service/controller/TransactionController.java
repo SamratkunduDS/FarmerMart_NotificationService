@@ -36,7 +36,6 @@ public class TransactionController {
 
         NotificationStatus status = success ? NotificationStatus.SENT : NotificationStatus.FAILED;
 
-        // Save & send via channel
         notificationService.saveNotification(request, status);
         return sendByChannel(request);
     }

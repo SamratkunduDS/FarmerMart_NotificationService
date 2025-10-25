@@ -56,8 +56,8 @@ public class OtpService {
         otpStorage.put(key, new OtpDetails(otp, expiry));
 
         //Checking
-        System.out.println("🔎 Looking for OTP of: " + emailOrPhone);
-        System.out.println("📦 Current OTP storage: " + otpStorage);
+        System.out.println(" Looking for OTP of: " + emailOrPhone);
+        System.out.println(" Current OTP storage: " + otpStorage);
         System.out.println(key);
 
 

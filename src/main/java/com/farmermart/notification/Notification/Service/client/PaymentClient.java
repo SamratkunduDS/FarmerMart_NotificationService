@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient(name = "PAYMENT-SERVICE")
 public interface PaymentClient {
 
-    @GetMapping("/payment/{id}")
-    public PaymentResponse getPaymentById(@PathVariable("id") String id);
+    @GetMapping("/status/{orderId}")
+    PaymentResponse getPaymentStatus(@PathVariable("orderId") String orderId);
 }
